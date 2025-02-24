@@ -5,7 +5,7 @@ import os
 
 # JFrog Artifactory details
 ARTIFACTORY_URL = "http://192.168.13.130:8082/artifactory/example-repo-local/"
-JAR_FILE_PATH = "/home/shivam/Java_app_3.0/target/kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar"  # Update the path if necessary
+JAR_FILE_PATH = "/var/lib/jenkins/workspace/BATCH4/target/kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar"  # Update the path if necessary
 ARTIFACT_NAME = "kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar"
 USERNAME = "admin"
 PASSWORD = "Password@123"
