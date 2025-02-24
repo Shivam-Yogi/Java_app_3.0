@@ -1,31 +1,29 @@
 #!/usr/bin/env python3
 
 import requests
-import subprocess
+import os
 
-def jfrogUpload():
-    # Define the URL, file path, and authentication credentials
-    url = 'http://54.237.49.56:8082/artifactory/example-repo-local/kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar'
-    file_path = '/var/lib/jenkins/workspace/BATCH4/target/kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar'
-    username = 'admin'
-    password = 'Password@123'  # Replace 'your_password' with the actual password
+# JFrog Artifactory details
+ARTIFACTORY_URL = "http://192.168.13.130:8082/artifactory/example-repo-local/"
+JAR_FILE_PATH = "/home/shivam/Java_app_3.0/target/kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar"  # Update the path if necessary
+ARTIFACT_NAME = "kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar"
+USERNAME = "admin"
+PASSWORD = "Password@123"
 
-    # Send the PUT request with authentication and file upload
-    with open(file_path, 'rb') as file:
-        response = requests.put(url, auth=(username, password), data=file)
+# Upload JAR file to JFrog Artifactory
+def upload_to_jfrog():
+    if not os.path.exists(JAR_FILE_PATH):
+        print("JAR file not found. Please build it first.")
+        return
 
-    # Check the response status code
-    if response.status_code == 201:
-        print("\nPUT request was successful!")
+    url = ARTIFACTORY_URL + ARTIFACT_NAME
+    with open(JAR_FILE_PATH, 'rb') as jar_file:
+        response = requests.put(url, auth=(USERNAME, PASSWORD), data=jar_file)
+    
+    if response.status_code in [200, 201]:
+        print("JAR file uploaded successfully!")
     else:
-        print(f"PUT request failed with status code {response.status_code}")
-        print("Response content:")
-        print(response.text)
+        print(f"Failed to upload JAR. Status Code: {response.status_code}, Response: {response.text}")
 
-
-def main():
-    jfrogUpload()
-
-##############################################################################################################
 if __name__ == "__main__":
-    main()
+    upload_to_jfrog()
